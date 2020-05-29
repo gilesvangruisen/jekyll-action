@@ -4,11 +4,15 @@ inputs:
   jekyll_src:  
     description: 'The Jekyll website source directory'
     required: false
+  github_pages_custom_domain:
+    description: 'Custom domain name for your GitHub Pages site, only necessary for writing the cname file for Apex/root domains'
+    required: false
 runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
     - ${{ inputs.jekyll_src }}
+    - ${{ inputs.github_pages_custom_domain }}
 branding:
   icon: 'book'
   color: 'blue'

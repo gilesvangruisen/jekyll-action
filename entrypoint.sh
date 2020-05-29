@@ -24,6 +24,11 @@ else
   echo "::debug ::Resolved ${JEKYLL_SRC} as a source directory"
 fi
 
+if [ -n "${INPUT_GITHUB_PAGES_CUSTOM_DOMAIN}" ]; then
+  CUSTOM_DOMAIN=${INPUT_GITHUB_PAGES_CUSTOM_DOMAIN}
+  echo "::debug ::Using custom domain ${CUSTOM_DOMAIN} for GitHub Pages site"
+fi
+
 JEKYLL_ENV=production bundle exec jekyll build -s ${JEKYLL_SRC} -d build
 echo "Jekyll build done"
 
@@ -31,6 +36,11 @@ cd build
 
 # No need to have GitHub Pages to run Jekyll
 touch .nojekyll
+
+# Write CNAME
+if [ -n "$CUSTOM_DOMAIN" ]; then
+  echo "$CUSTOM_DOMAIN" > CNAME
+fi
 
 # Is this a regular repo or an org.github.io type of repo
 case "${GITHUB_REPOSITORY}" in
